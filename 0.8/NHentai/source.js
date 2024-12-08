@@ -872,7 +872,7 @@ var _Sources = (() => {
       mangaId,
       pages: data.images.pages.map((image, i) => {
         const type = typeOfImage(image);
-        return `https://i.nhentai.net/galleries/${data.media_id}/${i + 1}.${type}`;
+        return `https://i1.nhentai.net/galleries/${data.media_id}/${i + 1}.${type}`;
       })
     });
   };
