@@ -1425,6 +1425,30 @@ var _Sources = (() => {
             containsMoreItems: true,
             type: import_types.HomeSectionType.singleRowNormal
           })
+        },
+        {
+          request: App.createRequest({
+            url: `${NHENTAI_URL}/api/galleries/search?query=${await this.generateQuery()}&sort=popular-month`,
+            method: "GET"
+          }),
+          sectionID: App.createHomeSection({
+            id: "popular-month",
+            title: "Popular Monthly",
+            containsMoreItems: true,
+            type: import_types.HomeSectionType.singleRowNormal
+          })
+        },
+        {
+          request: App.createRequest({
+            url: `${NHENTAI_URL}/api/galleries/search?query=${await this.generateQuery()}&sort=popular`,
+            method: "GET"
+          }),
+          sectionID: App.createHomeSection({
+            id: "popular",
+            title: "Popular All-Time",
+            containsMoreItems: true,
+            type: import_types.HomeSectionType.singleRowNormal
+          })
         }
       ];
       const promises = [];
