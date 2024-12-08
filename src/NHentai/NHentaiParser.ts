@@ -31,7 +31,7 @@ export const parseMangaDetails = (data: Gallery): SourceManga => {
             titles: Object.values(data.title).filter(title => title !== null),
             artist: artist,
             author: artist,
-            image: `https://t.nhentai.net/galleries/${data.media_id}/cover.${typeOfImage(data.images.cover)}`,
+            image: `https://t1.nhentai.net/galleries/${data.media_id}/cover.${typeOfImage(data.images.cover)}`,
             status: 'Completed',
             tags: [App.createTagSection({ id: 'tags', label: 'Tags', tags: tags })],
             desc: `Pages: ${data.num_pages}`
