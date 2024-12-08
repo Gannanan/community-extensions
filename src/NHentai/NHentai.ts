@@ -1,4 +1,4 @@
-import {
+ import {
     SourceManga,
     Chapter,
     ChapterDetails,
@@ -199,7 +199,9 @@ export class NHentai implements SearchResultsProviding, MangaProviding, ChapterP
         }
     }
 
-    async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
+async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
+        const skipReadManga = await this.stateManager.retrieve('skip_read_manga') ?? false
+        const readMangaIds = skipReadManga ? await this.getReadMangaIds() : []
         const sections = [
             {
                 request: App.createRequest({
@@ -236,6 +238,30 @@ export class NHentai implements SearchResultsProviding, MangaProviding, ChapterP
                     containsMoreItems: true,
                     type: HomeSectionType.singleRowNormal
                 })
+            },
+            {
+                request: App.createRequest({
+                    url: `${NHENTAI_URL}/api/galleries/search?query=${await this.generateQuery()}&sort=popular-month`,
+                    method: 'GET'
+                }),
+                sectionID: App.createHomeSection({
+                    id: 'popular-month',
+                    title: 'Popular Monthly',
+                    containsMoreItems: true,
+                    type: HomeSectionType.singleRowNormal
+                })
+            },
+            {
+                request: App.createRequest({
+                    url: `${NHENTAI_URL}/api/galleries/search?query=${await this.generateQuery()}&sort=popular`,
+                    method: 'GET'
+                }),
+                sectionID: App.createHomeSection({
+                    id: 'popular',
+                    title: 'Popular All-Time',
+                    containsMoreItems: true,
+                    type: HomeSectionType.singleRowNormal
+                })
             }
         ]
 
@@ -251,8 +277,7 @@ export class NHentai implements SearchResultsProviding, MangaProviding, ChapterP
                         if (hasNoResults(jsonData)) {
                             return
                         }
-                        section.sectionID.items = parseSearch(jsonData)
-
+                        section.sectionID.items = parseSearch(jsonData, readMangaIds ?? [])
                         sectionCallback(section.sectionID)
                     })
             )
@@ -260,6 +285,7 @@ export class NHentai implements SearchResultsProviding, MangaProviding, ChapterP
 
         await Promise.all(promises)
     }
+
 
     async getViewMoreItems(homepageSectionId: string, metadata: any): Promise<PagedResults> {
         let page: number = metadata?.page ?? 1
