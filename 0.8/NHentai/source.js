@@ -1388,6 +1388,13 @@ var _Sources = (() => {
         });
       }
     }
+    //TEST/////////////////////////////////////////////////////////////////////
+override async getSearchFields(): Promise<SearchField[]> {
+        return [
+            createSearchField({id: 'Characters', name: 'Characters', placeholder: ''}),
+ 
+        ]
+    }
     async getHomePageSections(sectionCallback) {
       const sections = [
         {
