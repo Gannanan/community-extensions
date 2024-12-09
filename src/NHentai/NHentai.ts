@@ -199,6 +199,14 @@ export class NHentai implements SearchResultsProviding, MangaProviding, ChapterP
         }
     }
 
+//TEST/////////////////////////////////////////////////////////////////////
+override async getSearchFields(): Promise<SearchField[]> {
+        return [
+            createSearchField({id: 'Characters', name: 'Characters', placeholder: ''}),
+ 
+        ]
+    }
+ 
 async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
         const skipReadManga = await this.stateManager.retrieve('skip_read_manga') ?? false
         const readMangaIds = skipReadManga ? await this.getReadMangaIds() : []
